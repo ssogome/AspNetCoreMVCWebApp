@@ -12,7 +12,8 @@ pool:
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+  buildReleaseConfiguration: 'Release'
+  buildMainConfiguration: 'Main'
   -name: foo
   value: contoso # triggers elseif condition
 
@@ -34,11 +35,10 @@ steps:
     solution: '$(solution)'
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
     platform: '$(buildPlatform)'    
-    ${{ if eq(variables.foo, 'adaptum') }}:
-    configuration: '$(buildConfiguration)'
-
+    ${{ if eq(variables.foo, 'adaptum') }}:  {configuration: '$(buildReleaseConfiguration)'}
+    ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:   {configuration: '$(buildMainConfiguration)'}
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-- script: echo DONE!    
+- script: echo DONE!  $()  
