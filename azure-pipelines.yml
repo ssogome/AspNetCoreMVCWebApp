@@ -30,7 +30,7 @@ steps:
 - ${{ else }}:
   - script: echo "the value is not adaptum or contoso"
 
-  ${{ if eq(variables.foo, 'adaptum') }}: 
+  ${{ if eq(variables.foo, 'adaptum') }}: {
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
@@ -42,3 +42,4 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+  }
