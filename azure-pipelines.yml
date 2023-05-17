@@ -29,6 +29,8 @@ steps:
   - script: echo "this is contoso" 
 - ${{ else }}:
   - script: echo "the value is not adaptum or contoso"
+
+  ${{ if eq(variables.foo, 'adaptum') }}: 
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
