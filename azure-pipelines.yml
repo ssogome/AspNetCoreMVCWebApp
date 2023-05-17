@@ -13,6 +13,8 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  -name: foo
+  value: contoso # triggers elseif condition
 
 steps:
 - task: NuGetToolInstaller@1
@@ -20,7 +22,13 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
-
+- script: echo "start"
+- ${{ if eq(variables.foo, 'adaptum') }}:
+  - script: echo "this is adaptum"
+- ${{ elseif eq(variables.foo, 'contoso') }}: # true
+  - script: echo "this is contoso" 
+- ${{ else }}:
+  - script: echo "the value is not adaptum or contoso"
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
