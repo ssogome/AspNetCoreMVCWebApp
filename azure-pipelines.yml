@@ -28,18 +28,16 @@ steps:
 - ${{ elseif eq(variables.foo, 'contoso') }}: # true
   - script: echo "this is contoso" 
 - ${{ else }}:
-  - script: echo "the value is not adaptum or contoso"
-
-  ${{ if eq(variables.foo, 'adaptum') }}: {
+  - script: echo "the value is not adaptum or contoso" 
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
+    platform: '$(buildPlatform)'    
+    ${{ if eq(variables.foo, 'adaptum') }}:
     configuration: '$(buildConfiguration)'
 
 - task: VSTest@2
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-  }
